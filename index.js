@@ -14,7 +14,7 @@ const app = express();
 DBCONNECTION();
 
 app.use(cors({
-    origin: 'http://localhost:3000/onboarding2',
+    origin: 'https://soma1.netlify.app/',
     methods: [ 'GET', 'POST', 'PATCH', 'DELETE' ],
 }));
 
@@ -45,7 +45,7 @@ app.get('/auth/google/callback', passport.authenticate('google', {
 app.get('/auth/google/success', (req, res) => {
     // let email = req.user.email;
     // console.log(email);
-    res.redirect('http://localhost:3000/onboarding2');
+    res.redirect('https://soma1.netlify.app/');
 });
 
 app.get('/auth/google/failure', (req, res) => {
