@@ -15,6 +15,7 @@ DBCONNECTION();
 
 app.use(cors({
     origin: 'https://soma1.netlify.app',
+    credentials: true,
     methods: [ 'GET', 'POST', 'PATCH', 'DELETE' ],
 }));
 
