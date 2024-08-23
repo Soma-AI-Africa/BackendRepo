@@ -14,7 +14,7 @@ const app = express();
 DBCONNECTION();
 
 app.use(cors({
-    origin: 'https://soma1.netlify.app/',
+    origin: 'https://soma1.netlify.app',
     methods: [ 'GET', 'POST', 'PATCH', 'DELETE' ],
 }));
 
