@@ -8,7 +8,7 @@ exports.updateUser = async (req, res) => {
 
         if (!user) return res.status('404').json({ message: 'user does not exist' });
  if (req.file) {
-            const result = await cloudinary.uploads(req.file.path, 'image');
+            const result = await cloudinary.uploads(req.file.path);
        await userModel.findByIdAndUpdate(user._id, { ...req.body, uploadedCV: result.url }, { new: true });
         }
         const update = await userModel.findByIdAndUpdate(user._id, req.body, { new: true });
