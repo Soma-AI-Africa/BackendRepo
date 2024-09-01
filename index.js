@@ -19,7 +19,7 @@ app.use(cors({
     methods: [ 'GET', 'POST', 'PATCH', 'DELETE' ],
 }));
 
-ap.use(cors())
+app.use(cors())
 
 app.use(express.json());
 
