@@ -48,7 +48,7 @@ app.get('/auth/google/callback', passport.authenticate('google', {
 app.get('/auth/google/success', (req, res) => {
     let email = req.user.email;
     console.log(email);
-    res.redirect('https://soma1.netlify.app/onboarding2');
+    // res.redirect('https://soma1.netlify.app/onboarding2');
     res.json({data: email })
 });
 
