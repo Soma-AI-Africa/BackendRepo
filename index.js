@@ -41,9 +41,14 @@ app.get('/', (req, res) => {
 
 app.get('/auth/google', passport.authenticate('google', { scope: [ 'email', 'profile' ] }));
 app.get('/auth/google/callback', passport.authenticate('google', {
-    successRedirect: '/auth/google/success',
-    failureRedirect: '/auth/google/failure'
-}));
+  failureRedirect: '/login'   
+
+}),
+(req, res) => {
+  // Handle successful authentication   
+
+  res.redirect('https://soma1.netlify.app/onboarding2');
+});
 
 app.get('/auth/google/success', (req, res) => {
     let email = req.user.email;
