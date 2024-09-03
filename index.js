@@ -6,6 +6,7 @@ const passport = require('passport');
 const session = require('express-session');
 const userRouter = require('./router/userRouter');
 const cors = require('cors');
+const AIResponseRouter = require('./router/AIresponseRouter');
 require('./auth');
 
 const port = EnviromentVariables.PORT;
@@ -64,6 +65,7 @@ app.get('/auth/google/failure', (req, res) => {
 });
 
 app.use('/api/user', userRouter);
+app.use('/api/ai-response', AIResponseRouter);
 
 app.use(errorHandler);
 
