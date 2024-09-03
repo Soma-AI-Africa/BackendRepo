@@ -15,7 +15,11 @@ const userModel = new mongoose.Schema({
     GPA: { type: String },
     graduation_date: { type: String },
     date_of_birth: { type: String },
-    uploadedCV: { type: String }
+    location: { type: String },
+    degree: { type: String },
+    funds_needed: { type: String },
+    uploadedCV: { type: String },
+    aiResponse: { type: mongoose.Schema.Types.ObjectId, ref: "AIResponse" }
 });
 
 module.exports = mongoose.model('users', userModel);

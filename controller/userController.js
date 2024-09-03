@@ -1,5 +1,7 @@
 const userModel = require('../model/userModel');
 const cloudinary = require('../utils/cloudinary');
+const axios = require('axios');
+const AiResponseSchema = require('../model/AiResponseModel');
 
 exports.updateUser = async (req, res) => {
     try {
@@ -7,10 +9,7 @@ exports.updateUser = async (req, res) => {
         const user = await userModel.findOne({ email: email });
 
         if (!user) return res.status('404').json({ message: 'user does not exist' });
- if (req.file) {
-            const result = await cloudinary.uploads(req.file.path);
-       await userModel.findByIdAndUpdate(user._id, { ...req.body, uploadedCV: result.url }, { new: true });
-        }
+
         const update = await userModel.findByIdAndUpdate(user._id, req.body, { new: true });
 
         res.status(200).json({
@@ -42,6 +41,73 @@ exports.uploadDocument = async (req, res, next) => {
             data: uploadFile
         });
 
+    } catch (error) {
+        return next(error);
+    }
+};
+
+exports.getSingleUser = async (req, res, next) => {
+    try {
+        const id = req.params.userId;
+        const user = await userModel.findById(id);
+
+        if (!user) throw new AppError(404, "User does not exist");
+
+        res.status(200).json({
+            status: "Successful",
+            data: user
+        });
+
+    } catch (error) {
+        return next(error);
+    }
+};
+exports.getAllUsers = async (req, res, next) => {
+    try {
+        const user = await userModel.find();
+        if (user < 1) throw new AppError(404, "NO User Found");
+
+        res.status(200).json({
+            status: "Successful",
+            data: user
+        });
+
+    } catch (error) {
+        return next(error);
+    }
+};
+
+exports.runAiModel = async (req, res, next) => {
+    try {
+        const id = req.params.userId;
+        const user = await userModel.findById(id);
+        if (!user) throw new AppError(404, "User does not exist");
+
+        const response = await axios.post('https://soma-model.onrender.com/match-scholarships', user);
+
+        // const result = JSON.parse(response.data);
+        // console.log(result);
+        // if (Array.isArray(response.data)) {
+        //     await response?.data.forEach(async (el) => {
+        //         await AiResponseSchema.create(el);
+        //     });
+        // } else {
+        //     console.error("Response data is not an array");
+        // }
+
+        const Airesponse = await AiResponseSchema({
+            aiRes: response.data
+        });
+
+        Airesponse.user = user._id;
+        Airesponse.save();
+        user.aiResponse = Airesponse._id;
+        user.save();
+
+        res.status(200).json({
+            message: "Data response as been added to the database",
+            data: Airesponse
+        });
     } catch (error) {
         return next(error);
     }
