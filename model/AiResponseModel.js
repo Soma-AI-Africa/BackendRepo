@@ -6,6 +6,8 @@ const AiResponseSchema = mongoose.Schema({
     Location: { type: String },
     Description: { type: String },
     Funds: { type: String },
+    date_degree: { type: String },
+    match_score: { type: String },
     aiRes: { type: String },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "users" }
 });

@@ -19,7 +19,15 @@ const userModel = new mongoose.Schema({
     degree: { type: String },
     funds_needed: { type: String },
     uploadedCV: { type: String },
-    aiResponse: { type: mongoose.Schema.Types.ObjectId, ref: "AIResponse" }
+    ResponseAi: [ {
+        Title: { type: String },
+        Link: { type: String },
+        Location: { type: String },
+        Description: { type: String },
+        Funds: { type: String },
+        date_degree: { type: String },
+        match_score: { type: String }
+    } ]
 });
 
 module.exports = mongoose.model('users', userModel);

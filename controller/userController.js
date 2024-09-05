@@ -2,6 +2,7 @@ const userModel = require('../model/userModel');
 const cloudinary = require('../utils/cloudinary');
 const axios = require('axios');
 const AiResponseSchema = require('../model/AiResponseModel');
+const mongoose = require('mongoose');
 
 exports.updateUser = async (req, res) => {
     try {
@@ -85,30 +86,37 @@ exports.runAiModel = async (req, res, next) => {
 
         const response = await axios.post('https://soma-model.onrender.com/match-scholarships', user);
 
-        // const result = JSON.parse(response.data);
+        const result = response.data;
         // console.log(result);
-        // if (Array.isArray(response.data)) {
-        //     await response?.data.forEach(async (el) => {
-        //         await AiResponseSchema.create(el);
-        //     });
+        // if (Array.isArray(result)) {
+        //     for (let data of result) {
+        //         const Airesponse = await AiResponseSchema(data);
+        //         Airesponse.user = user._id;
+        //         Airesponse.save();
+        //         user.ResponseAi?.push(new mongoose.Types.ObjectId(Airesponse._id));
+        //     };
+        //     // user.save();
         // } else {
         //     console.error("Response data is not an array");
         // }
 
-        const Airesponse = await AiResponseSchema({
-            aiRes: response.data
-        });
+        // user.save();
 
-        Airesponse.user = user._id;
-        Airesponse.save();
-        user.aiResponse = Airesponse._id;
+        // const Airesponse = await AiResponseSchema({
+        //     aiRes: response.data
+        // });
+
+        // Airesponse.user = user._id;
+        // Airesponse.save();
+        user.ResponseAi = result;
         user.save();
 
         res.status(200).json({
             message: "Data response as been added to the database",
-            data: Airesponse
+            data: response.data
         });
     } catch (error) {
+        console.log(error);
         return next(error);
     }
 };
